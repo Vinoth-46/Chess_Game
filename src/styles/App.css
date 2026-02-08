@@ -1,0 +1,250 @@
+/* ========================================
+   App Layout Styles
+   ======================================== */
+
+.app {
+    min-height: 100vh;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
+}
+
+/* Premium gradient background */
+.app::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.app.light::before {
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.04) 0%, transparent 50%);
+}
+
+/* Game Container */
+.game-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 1.5rem;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ========================================
+   Desktop Layout - Three Column
+   ======================================== */
+
+/* Large Desktop (1400px+) */
+@media (min-width: 1400px) {
+    .game-layout {
+        display: grid;
+        grid-template-columns: 280px 1fr 280px;
+        gap: 2rem;
+        width: 100%;
+        max-width: 1400px;
+        align-items: start;
+    }
+}
+
+/* Medium Desktop (1200px - 1399px) */
+@media (min-width: 1200px) and (max-width: 1399px) {
+    .game-layout {
+        display: grid;
+        grid-template-columns: 240px 1fr 240px;
+        gap: 1.5rem;
+        width: 100%;
+        max-width: 1200px;
+        align-items: start;
+    }
+}
+
+/* Small Desktop / Large Tablet (1024px - 1199px) */
+@media (min-width: 1024px) and (max-width: 1199px) {
+    .game-layout {
+        display: grid;
+        grid-template-columns: 200px 1fr 200px;
+        gap: 1rem;
+        width: 100%;
+        max-width: 1100px;
+        align-items: start;
+    }
+
+    .game-sidebar {
+        max-width: 200px;
+    }
+}
+
+/* Tablet Landscape (900px - 1023px) */
+@media (min-width: 900px) and (max-width: 1023px) {
+    .game-layout {
+        display: grid;
+        grid-template-columns: 180px 1fr 180px;
+        gap: 0.75rem;
+        width: 100%;
+        max-width: 950px;
+        align-items: start;
+    }
+
+    .game-sidebar {
+        max-width: 180px;
+    }
+}
+
+/* Tablet Portrait (768px - 899px) - Two column layout */
+@media (min-width: 768px) and (max-width: 899px) {
+    .game-layout {
+        display: grid;
+        grid-template-columns: 1fr 240px;
+        grid-template-rows: auto auto;
+        gap: 1rem;
+        width: 100%;
+        max-width: 800px;
+    }
+
+    .board-wrapper {
+        grid-column: 1;
+        grid-row: 1 / 3;
+    }
+
+    .game-sidebar.left {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .game-sidebar.right {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .game-sidebar {
+        position: static;
+    }
+}
+
+/* Mobile (below 768px) - Single column layout */
+@media (max-width: 767px) {
+    .game-container {
+        padding: 0.75rem;
+    }
+
+    .game-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .board-wrapper {
+        order: 0;
+        width: 100%;
+    }
+
+    .game-sidebar {
+        position: static;
+        width: 100%;
+    }
+
+    .game-sidebar.left {
+        order: 2;
+    }
+
+    .game-sidebar.right {
+        order: 1;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .game-container {
+        padding: 0.5rem;
+    }
+
+    .game-layout {
+        gap: 0.75rem;
+    }
+}
+
+/* Board Wrapper */
+.board-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+/* Sidebars */
+.game-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: sticky;
+    top: 80px;
+    min-width: 0;
+    /* Prevent overflow */
+}
+
+/* ========================================
+   Animation Keyframes
+   ======================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Apply animations */
+.game-layout {
+    animation: fadeIn 0.3s ease;
+}
+
+.game-sidebar {
+    animation: slideInUp 0.4s ease;
+}
+
+.board-wrapper {
+    animation: scaleIn 0.4s ease;
+}
