@@ -2,6 +2,8 @@
 
 A modern, premium chess game built with React and TypeScript. Play against friends locally, challenge an AI opponent powered by Stockfish, or enjoy a beautiful responsive design on any device.
 
+**Play Live:** [https://chess-pro-master.web.app](https://chess-pro-master.web.app)
+
 ![Chess Master Pro](https://img.shields.io/badge/React-19-blue?logo=react) ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript) ![Vite](https://img.shields.io/badge/Vite-7-purple?logo=vite) ![License](https://img.shields.io/badge/License-MIT-green)
 
 ## ✨ Features
@@ -26,7 +28,7 @@ A modern, premium chess game built with React and TypeScript. Play against frien
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/chess-master-pro.git
+git clone https://github.com/Vinoth-46/Chess_Game.git
 cd chess-master-pro
 
 # Install dependencies
