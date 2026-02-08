@@ -9,15 +9,17 @@ interface PieceProps {
     color: Color
     square: Square
     isSelected: boolean
+    canInteract?: boolean
 }
 
-const Piece: React.FC<PieceProps> = ({ type, color, square, isSelected }) => {
+const Piece: React.FC<PieceProps> = ({ type, color, square, isSelected, canInteract = true }) => {
     const ref = useRef<HTMLDivElement>(null)
 
     // Set up drag source
     const [{ isDragging }, drag] = useDrag({
         type: 'piece',
         item: { square, pieceType: type, pieceColor: color },
+        canDrag: canInteract,
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),

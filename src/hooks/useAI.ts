@@ -88,7 +88,11 @@ export function useAI() {
                 const to = moveString.slice(2, 4) as Square
                 const promotion = moveString.length > 4 ? moveString[4] : undefined
 
-                makeMove(from, to, promotion)
+                const result = makeMove(from, to, promotion)
+
+                if (!result) {
+                    throw new Error(`AI returned illegal move: ${moveString}`)
+                }
             }
         } catch (error) {
             console.error('AI move error:', error)
