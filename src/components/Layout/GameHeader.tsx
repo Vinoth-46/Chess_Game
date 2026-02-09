@@ -1,4 +1,5 @@
 import React from 'react'
+import { Crown, Plus, Sun, Moon } from 'lucide-react'
 import { useSettingsStore, BOARD_THEMES } from '../../store/settingsStore'
 import './Layout.css'
 
@@ -22,14 +23,14 @@ const GameHeader: React.FC<GameHeaderProps> = ({ onNewGame }) => {
         <header className="game-header">
             <div className="header-left">
                 <div className="logo">
-                    <span className="logo-icon">♔</span>
+                    <Crown className="logo-icon" size={24} strokeWidth={2.5} />
                     <span className="logo-text">Chess Master Pro</span>
                 </div>
             </div>
 
             <nav className="header-nav">
                 <button className="nav-btn primary" onClick={onNewGame}>
-                    <span className="icon">+</span>
+                    <Plus size={20} />
                     <span>New Game</span>
                 </button>
             </nav>
@@ -84,7 +85,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({ onNewGame }) => {
                     onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                     title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
                 >
-                    {theme === 'dark' ? '☀️' : '🌙'}
+                    {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
                 </button>
             </div>
         </header>

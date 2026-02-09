@@ -1,4 +1,5 @@
 import React from 'react'
+import { Undo2, RotateCcw, Flag, Handshake, Volume2, VolumeX, Play } from 'lucide-react'
 import { useGameStore } from '../../store/gameStore'
 import { useSettingsStore } from '../../store/settingsStore'
 import Timer from './Timer'
@@ -70,7 +71,7 @@ const GameControls: React.FC = () => {
                                 onClick={undoMove}
                                 title="Undo Move"
                             >
-                                <span className="icon">↩</span>
+                                <Undo2 size={18} />
                                 <span className="label">Undo</span>
                             </button>
                         )}
@@ -80,7 +81,7 @@ const GameControls: React.FC = () => {
                             onClick={flipBoard}
                             title="Flip Board"
                         >
-                            <span className="icon">🔄</span>
+                            <RotateCcw size={18} />
                             <span className="label">Flip</span>
                         </button>
 
@@ -89,7 +90,7 @@ const GameControls: React.FC = () => {
                             onClick={offerDraw}
                             title="Offer Draw"
                         >
-                            <span className="icon">🤝</span>
+                            <Handshake size={18} />
                             <span className="label">Draw</span>
                         </button>
 
@@ -98,7 +99,7 @@ const GameControls: React.FC = () => {
                             onClick={resignGame}
                             title="Resign"
                         >
-                            <span className="icon">🏳️</span>
+                            <Flag size={18} />
                             <span className="label">Resign</span>
                         </button>
                     </>
@@ -110,7 +111,7 @@ const GameControls: React.FC = () => {
                         onClick={() => newGame({ mode: gameMode })}
                         title="New Game"
                     >
-                        <span className="icon">♟</span>
+                        <Play size={18} />
                         <span className="label">New Game</span>
                     </button>
                 )}
@@ -120,7 +121,7 @@ const GameControls: React.FC = () => {
                     onClick={toggleSound}
                     title={soundEnabled ? 'Mute' : 'Unmute'}
                 >
-                    <span className="icon">{soundEnabled ? '🔊' : '🔇'}</span>
+                    {soundEnabled ? <Volume2 size={18} /> : <VolumeX size={18} />}
                 </button>
             </div>
 

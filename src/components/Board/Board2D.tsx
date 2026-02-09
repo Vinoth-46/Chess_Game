@@ -186,7 +186,6 @@ const Board2D: React.FC = () => {
                         )}
                         {promotionSquare === square && (
                             <div style={{ position: 'absolute', zIndex: 100, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-                                {/* Logic handled by modal overlay, this is just a placeholder anchor */}
                             </div>
                         )}
                     </Square>
@@ -207,7 +206,7 @@ const Board2D: React.FC = () => {
         highlightCheck,
         handleSquareClick,
         handleDrop,
-        promotionSquare // Added dependency
+        promotionSquare
     ])
 
     return (
