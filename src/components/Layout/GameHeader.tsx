@@ -12,6 +12,8 @@ const GameHeader: React.FC<GameHeaderProps> = ({ onNewGame }) => {
         setTheme,
         boardTheme,
         setBoardTheme,
+        viewMode,
+        setViewMode,
         showCoordinates,
         toggleCoordinates,
     } = useSettingsStore()
@@ -47,6 +49,24 @@ const GameHeader: React.FC<GameHeaderProps> = ({ onNewGame }) => {
                             <option key={t.id} value={t.id}>{t.name}</option>
                         ))}
                     </select>
+                </div>
+
+                {/* View Mode Toggle */}
+                <div className="view-toggle">
+                    <button
+                        className={`setting-btn ${viewMode === '2d' ? 'active' : ''}`}
+                        onClick={() => setViewMode('2d')}
+                        title="2D View"
+                    >
+                        2D
+                    </button>
+                    <button
+                        className={`setting-btn ${viewMode === '3d' ? 'active' : ''}`}
+                        onClick={() => setViewMode('3d')}
+                        title="3D View"
+                    >
+                        3D
+                    </button>
                 </div>
 
                 {/* Coordinates Toggle */}

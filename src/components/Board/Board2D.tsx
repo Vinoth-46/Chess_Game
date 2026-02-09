@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import { useGameStore } from '../../store/gameStore'
 import { useSettingsStore } from '../../store/settingsStore'
+import { useAnalysis } from '../../hooks/useAnalysis'
 import Square from './Square'
 import Piece from '../Pieces/Piece'
 import Coordinates from './Coordinates'
@@ -37,6 +38,9 @@ const Board2D: React.FC = () => {
         largeBoard,
     } = useSettingsStore()
 
+    // Analysis hook
+    const { analysis } = useAnalysis(gameMode === 'analysis')
+
     // State for promotion modal
     const [promotionSquare, setPromotionSquare] = useState<SquareType | null>(null)
     const [pendingMove, setPendingMove] = useState<{ from: SquareType, to: SquareType } | null>(null)
@@ -44,7 +48,17 @@ const Board2D: React.FC = () => {
     // Get current board position
     const board = useMemo(() => chess.board(), [fen])
 
-    // ... existing code ...
+    // Combine manual arrows with analysis arrow
+    const displayArrows = useMemo(() => {
+        const currentArrows = [...arrows]
+        if (analysis?.bestMove && analysis.bestMove.length >= 4) {
+            const from = analysis.bestMove.slice(0, 2) as SquareType
+            const to = analysis.bestMove.slice(2, 4) as SquareType
+            // Add analysis arrow (green)
+            currentArrows.push({ from, to, color: 'rgba(0, 255, 0, 0.7)' })
+        }
+        return currentArrows
+    }, [arrows, analysis?.bestMove])
 
     // Check if player can interact with the board
     const canInteract = useCallback((color?: 'w' | 'b') => {
@@ -60,8 +74,6 @@ const Board2D: React.FC = () => {
         if (color && color !== myColor) return false
 
         // Must be player's turn
-        if (chess.turn() !== myColor) return false
-
         if (chess.turn() !== myColor) return false
 
         return true
@@ -195,6 +207,7 @@ const Board2D: React.FC = () => {
         highlightCheck,
         handleSquareClick,
         handleDrop,
+        promotionSquare // Added dependency
     ])
 
     return (
@@ -211,7 +224,7 @@ const Board2D: React.FC = () => {
                 } as React.CSSProperties}
             >
                 {squares}
-                <Arrows arrows={arrows} isFlipped={isFlipped} />
+                <Arrows arrows={displayArrows} isFlipped={isFlipped} />
 
                 {promotionSquare && pendingMove && (
                     <PromotionModal

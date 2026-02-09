@@ -30,22 +30,19 @@ const Piece: React.FC<PieceProps> = ({ type, color, square, isSelected, canInter
 
     const pieceName = PIECE_NAMES[type]
     const colorName = color === 'w' ? 'white' : 'black'
+    const colorCode = color === 'w' ? 'w' : 'b'
+    const typeCode = type.toUpperCase()
+    const pieceCode = type === 'n' ? `${colorCode}N` : `${colorCode}${typeCode}`
 
-    // Use Unicode chess symbols as fallback
-    const pieceSymbols: Record<string, string> = {
-        'white-king': '♔',
-        'white-queen': '♕',
-        'white-rook': '♖',
-        'white-bishop': '♗',
-        'white-knight': '♘',
-        'white-pawn': '♙',
-        'black-king': '♚',
-        'black-queen': '♛',
-        'black-rook': '♜',
-        'black-bishop': '♝',
-        'black-knight': '♞',
-        'black-pawn': '♟',
-    }
+    // Construct basic file name wP, wN, wB, wR, wQ, wK etc.
+    // For knight we use N to match standard notation, but my script used N for knight? 
+    // Let's check the script: wP, wN, wB... Yes.
+
+    // Actually the script uses: wP, wN, wB, wR, wQ, wK
+    // type is lowercase 'p', 'n', 'b', 'r', 'q', 'k'
+    // So for knight 'n' -> 'N'. For others 'p' -> 'P'.
+
+    const svgName = `${color}${type === 'n' ? 'N' : type.toUpperCase()}`
 
     return (
         <div
@@ -53,9 +50,12 @@ const Piece: React.FC<PieceProps> = ({ type, color, square, isSelected, canInter
             className={`piece ${colorName} ${pieceName} ${isSelected ? 'selected' : ''} ${isDragging ? 'dragging' : ''}`}
             data-piece={`${colorName}-${pieceName}`}
         >
-            <span className="piece-symbol">
-                {pieceSymbols[`${colorName}-${pieceName}`]}
-            </span>
+            <img
+                src={`/assets/pieces/${svgName}.svg`}
+                alt={`${colorName} ${pieceName}`}
+                className="piece-image"
+                draggable={false}
+            />
         </div>
     )
 }

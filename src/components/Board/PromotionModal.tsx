@@ -11,26 +11,14 @@ interface PromotionModalProps {
 const PromotionModal: React.FC<PromotionModalProps> = ({ color, onSelect, onClose }) => {
     const pieces: PieceSymbol[] = ['q', 'r', 'b', 'n']
 
-    // Fallback unicode symbols if images fail
-    const pieceSymbols: Record<string, string> = {
-        'white-queen': '♕',
-        'white-rook': '♖',
-        'white-bishop': '♗',
-        'white-knight': '♘',
-        'black-queen': '♛',
-        'black-rook': '♜',
-        'black-bishop': '♝',
-        'black-knight': '♞',
-    }
-
     const colorName = color === 'w' ? 'white' : 'black'
     const pieceNames: Record<PieceSymbol, string> = {
         q: 'queen',
         r: 'rook',
         b: 'bishop',
         n: 'knight',
-        p: 'pawn', // Won't be used
-        k: 'king'  // Won't be used
+        p: 'pawn',
+        k: 'king'
     }
 
     return (
@@ -38,20 +26,26 @@ const PromotionModal: React.FC<PromotionModalProps> = ({ color, onSelect, onClos
             <div className="promotion-modal" onClick={e => e.stopPropagation()}>
                 <h3 className="promotion-title">Promote Pawn</h3>
                 <div className="promotion-options">
-                    {pieces.map(type => (
-                        <div
-                            key={type}
-                            className="promotion-option"
-                            onClick={() => onSelect(type)}
-                            title={`Promote to ${pieceNames[type]}`}
-                        >
-                            <div className={`promotion-piece ${colorName} ${pieceNames[type]}`}>
-                                <span className="piece-symbol">
-                                    {pieceSymbols[`${colorName}-${pieceNames[type]}`]}
-                                </span>
+                    {pieces.map(type => {
+                        const svgName = `${color}${type === 'n' ? 'N' : type.toUpperCase()}`
+                        return (
+                            <div
+                                key={type}
+                                className="promotion-option"
+                                onClick={() => onSelect(type)}
+                                title={`Promote to ${pieceNames[type]}`}
+                            >
+                                <div className={`promotion-piece piece ${colorName} ${pieceNames[type]}`}>
+                                    <img
+                                        src={`/assets/pieces/${svgName}.svg`}
+                                        alt={`${colorName} ${pieceNames[type]}`}
+                                        className="piece-image"
+                                        draggable={false}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        )
+                    })}
                 </div>
             </div>
         </div>

@@ -25,13 +25,14 @@ class StockfishEngine {
     private messageHandlers: MessageHandler[] = []
     private pendingMove: PendingRequest | null = null
     private currentDepth: number = 10
+    private currentMoveTime: number = 2000
 
     // Difficulty settings map to Stockfish skill level (0-20) and depth
     static DIFFICULTY_SETTINGS = {
-        beginner: { skillLevel: 1, depth: 3, errorProbability: 0.4 },
-        intermediate: { skillLevel: 8, depth: 8, errorProbability: 0.15 },
-        advanced: { skillLevel: 15, depth: 15, errorProbability: 0.05 },
-        grandmaster: { skillLevel: 20, depth: 20, errorProbability: 0 },
+        beginner: { skillLevel: 1, depth: 2, errorProbability: 0.5, time: 1000 },
+        intermediate: { skillLevel: 8, depth: 8, errorProbability: 0.2, time: 2000 },
+        advanced: { skillLevel: 15, depth: 15, errorProbability: 0.05, time: 3000 },
+        grandmaster: { skillLevel: 20, depth: 22, errorProbability: 0, time: 5000 },
     }
 
     async initialize(): Promise<void> {
@@ -147,27 +148,30 @@ class StockfishEngine {
     setDifficulty(difficulty: keyof typeof StockfishEngine.DIFFICULTY_SETTINGS): void {
         const settings = StockfishEngine.DIFFICULTY_SETTINGS[difficulty]
         this.currentDepth = settings.depth
+        this.currentMoveTime = (settings as any).time || 2000
         this.sendCommand(`setoption name Skill Level value ${settings.skillLevel}`)
     }
 
-    async getBestMove(fen: string, timeMs: number = 2000): Promise<string> {
+    async getBestMove(fen: string, timeMs?: number): Promise<string> {
         if (!this.isReady) {
             throw new Error('Stockfish not initialized')
         }
+
+        const moveTime = timeMs || this.currentMoveTime
 
         return new Promise((resolve, reject) => {
             this.pendingMove = { resolve, reject }
 
             this.sendCommand('ucinewgame')
             this.sendCommand(`position fen ${fen}`)
-            this.sendCommand(`go depth ${this.currentDepth} movetime ${timeMs}`)
+            this.sendCommand(`go depth ${this.currentDepth} movetime ${moveTime}`)
 
             // Timeout
             setTimeout(() => {
                 if (this.pendingMove) {
                     this.sendCommand('stop')
                 }
-            }, timeMs + 1000)
+            }, moveTime + 1000)
         })
     }
 
@@ -191,8 +195,23 @@ class StockfishEngine {
         })
     }
 
+    startAnalysis(fen: string, depth: number = 22): void {
+        if (!this.isReady) return
+
+        // Stop any current calculation
+        this.stop()
+
+        this.sendCommand('ucinewgame')
+        this.sendCommand(`position fen ${fen}`)
+        this.sendCommand(`go depth ${depth}`)
+    }
+
     stop(): void {
         this.sendCommand('stop')
+        if (this.pendingMove) {
+            this.pendingMove.reject(new Error('Analysis stopped'))
+            this.pendingMove = null
+        }
     }
 
     destroy(): void {

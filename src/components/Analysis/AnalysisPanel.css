@@ -1,0 +1,120 @@
+.analysis-panel {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
+}
+
+.analysis-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+}
+
+.analysis-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.analysis-depth {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.eval-bar-container {
+    height: 20px;
+    background: #333;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.eval-bar-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /* Horizontal bar? Or vertical? */
+    /* Wait, usually eval bars are vertical next to board. 
+       But here I put it inside the panel. Let's make it horizontal for now or redesign.
+       Horizontal: height 100%, width variable.
+       Previous code used height variable, implying vertical bar.
+       But container height is 20px. So it's horizontal.
+       If horizontal:
+       0% is Black advantage (left or bottom?)
+       100% is White advantage.
+       Let's stick to width.
+    */
+    background: #fff;
+    transition: width 0.3s ease;
+}
+
+/* Redoing eval bar logic in CSS */
+.eval-bar-container {
+    height: 12px;
+    width: 100%;
+    background: #444;
+    display: flex;
+}
+
+.eval-bar-fill {
+    background: #eee;
+    /* White favor */
+    height: 100%;
+    /* width set by inline style */
+    transition: width 0.5s ease;
+}
+
+.eval-score {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #000;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
+    pointer-events: none;
+    z-index: 1;
+    /* If bar is dark, need light text. */
+}
+
+.analysis-lines {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.best-line {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.best-line .label {
+    font-size: 0.9rem;
+    color: #aaa;
+    font-weight: 500;
+}
+
+.best-line .moves {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.best-line .move {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9rem;
+}
